@@ -1,0 +1,10 @@
+{
+  "version": "1",
+  "name": "Exiros",
+  "description": "Onchain XP & rewards for Farcaster users",
+  "icon": "https://exiros.vercel.app/exiros-logo.png",
+  "homeUrl": "https://exiros.vercel.app",
+  "requiredCapabilities": [],
+  "recommendedCapabilities": []
+}
+
