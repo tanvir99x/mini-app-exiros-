@@ -5,6 +5,11 @@
   "icon": "https://exiros.vercel.app/exiros-logo.png",
   "homeUrl": "https://exiros.vercel.app",
   "requiredCapabilities": [],
-  "recommendedCapabilities": []
+  "recommendedCapabilities": [],
+  "accountAssociation": {
+    "header": "eyJmaWQiOjEwNDE5NTMsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHg0N2U4NzlhRDQ0MTNhQzgyNTdmZjg4RTg4YzMxZDQ3ODE5YTRkZTQ3In0",
+    "payload": "eyJkb21haW4iOiJleGlyb3MudmVyY2VsLmFwcCJ9",
+    "signature": "Qz4sni0n10tYNOPVqOGhYojPfeaOEfoAPCRUHM2vTm504bErghmaQDPppN2EAtkkw9Gya7JeAZBPAGy6VY3d5xs="
+  }
 }
 
