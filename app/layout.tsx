@@ -1,30 +1,21 @@
-"use client";
+import "./globals.css";
+import Providers from "./providers";
 
-import { useEffect } from "react";
-import { usePathname, useRouter } from "next/navigation";
+export const metadata = {
+  title: "Exiros",
+  description: "Earn on Base",
+};
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const router = useRouter();
-  const pathname = usePathname();
-
-  useEffect(() => {
-    // allow waitlist page always
-    if (pathname === "/waitlist") return;
-
-    const joined = localStorage.getItem("exiros_waitlist");
-
-    if (joined !== "true") {
-      router.replace("/waitlist");
-    }
-  }, [pathname, router]);
-
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

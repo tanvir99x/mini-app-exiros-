@@ -1,136 +1,34 @@
-"use client";
+import TaskCard from "../components/TaskCard";
+import { TASKS } from "../lib/tasks";
+import BottomNav from "../components/BottomNav";
+import BlurBackground from "../components/BlurBackground";
+import Splash from "../components/Splash";
 
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 
-type FarcasterUser = {
-  fid: number;
-  username: string;
-  pfp_url: string;
-};
-
-type Stage = "installing" | "connect" | "loading";
 
 export default function Home() {
-  const router = useRouter();
-  const [stage, setStage] = useState<Stage>("installing");
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const connected = localStorage.getItem("exiros_connected");
-      if (connected === "true") {
-        router.replace("/tasks");
-      } else {
-        setStage("connect");
-      }
-    }, 1500);
-
-    return () => clearTimeout(timer);
-  }, [router]);
-
-  const connectFarcaster = async () => {
-    setStage("loading");
-
-    const fid = (window as any)?.farcaster?.fid;
-
-    if (!fid) {
-      alert("Open this app inside Farcaster / Warpcast");
-      setStage("connect");
-      return;
-    }
-
-    const res = await fetch(
-      `https://api.neynar.com/v2/farcaster/user/bulk?fids=${fid}`,
-      {
-        headers: {
-          api_key: process.env.NEXT_PUBLIC_NEYNAR_API_KEY!,
-        },
-      }
-    );
-
-    const data = await res.json();
-    const user = data.users[0];
-
-    const farcasterUser: FarcasterUser = {
-      fid: user.fid,
-      username: user.username,
-      pfp_url: user.pfp_url,
-    };
-
-    localStorage.setItem("exiros_connected", "true");
-    localStorage.setItem(
-      "exiros_farcaster",
-      JSON.stringify(farcasterUser)
-    );
-
-    router.push("/tasks");
-  };
-
-  /* INSTALLING */
-  if (stage === "installing") {
-    return (
-      <Screen>
-        <img src="/exiros-logo.png" width={120} />
-        <p>Initializing Exiros…</p>
-      </Screen>
-    );
-  }
-
-  /* LOADING */
-  if (stage === "loading") {
-    return (
-      <Screen>
-        <p>Connecting Farcaster…</p>
-      </Screen>
-    );
-  }
-
-  /* CONNECT */
   return (
-    <Screen>
-      <img src="/exiros-logo.png" width={90} />
-      <h2>Connect Farcaster</h2>
-      <p style={{ opacity: 0.7, fontSize: 14 }}>
-        Your identity & XP will be linked
-      </p>
+    <main className="min-h-screen text-white relative overflow-hidden">
+      {/* Animated blur background */}
+      <BlurBackground />
 
-      <button onClick={connectFarcaster} style={styles.button}>
-        Connect
-      </button>
-    </Screen>
+      <div className="p-4 space-y-4 pb-24 relative z-10">
+        {/* NFT Banner */}
+        <div className="rounded-3xl p-6 bg-white/10 backdrop-blur-xl border border-white/10">
+          <h2 className="text-xl font-bold">Upcoming NFT Mint</h2>
+          <p className="text-sm opacity-70">Coming soon</p>
+        </div>
+
+        {/* Tasks */}
+        <h3 className="text-lg font-bold">Live Tasks</h3>
+
+        {TASKS.map((task) => (
+          <TaskCard key={task.id} task={task} />
+        ))}
+      </div>
+
+      {/* Bottom navigation */}
+      <BottomNav />
+    </main>
   );
 }
-
-/* UI */
-function Screen({ children }: { children: React.ReactNode }) {
-  return (
-    <div
-      style={{
-        height: "100vh",
-        background: "#0a0a0a",
-        color: "white",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 16,
-        padding: 20,
-      }}
-    >
-      {children}
-    </div>
-  );
-}
-
-const styles = {
-  button: {
-    padding: "12px 20px",
-    borderRadius: 14,
-    border: "none",
-    backgroundColor: "#4f46e5",
-    color: "white",
-    fontWeight: 800,
-    cursor: "pointer",
-    width: 260,
-  },
-};
